@@ -7,14 +7,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //     options: FirebaseOptions(
-  //         apiKey: 'AIzaSyAzM8Aqjp2PvDYeGjIVrXfjzj5CCY9jR4A',
-  //         appId: "1:349788433410:android:e50c855357ba6b71ba8b1b",
-  //         messagingSenderId: '',
-  //         projectId: "appi-f885c"));
-  // String? token = await FirebaseMessaging.instance.getToken();
-  // print("FCM Token: $token");
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: 'AIzaSyA4ZMao8NaZzaYxEbJ-ycZPTcz0FepuL00',
+          appId: "1:10777654946:android:90c665bc619242878009fb",
+          messagingSenderId: '',
+          projectId: "assessment-593d7"));
+  String? token = await FirebaseMessaging.instance.getToken();
+  print("FCM Token: $token");
   runApp(MyApp());
 }
 
