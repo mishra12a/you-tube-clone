@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'Phone_Auth.dart';
 
 class OVerify extends StatefulWidget {
-  const OVerify({super.key});
-
+  const OVerify({super.key, required this.varificationID});
+  final String varificationID;
   @override
   State<OVerify> createState() => _OVerifyState();
 }
@@ -12,7 +13,28 @@ class OVerify extends StatefulWidget {
 class _OVerifyState extends State<OVerify> {
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
+
+    final TextEditingController otpcontroller = TextEditingController();
+
+      verifyOTP() async {
+      String result = await PhoneAuthentication().verifyOTPcode(
+      verifyID: widget.varificationID, otp: otpcontroller.text.toString());
+
+      if (result == 'success') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Successfully signed in!')),
+        );
+      }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('OTP Verification Failed'),
+            duration: Duration(seconds: 1),
+          ), // SnackBar
+        );
+      }
+
+    }
 
     return Scaffold(
       backgroundColor: Color(0xFF191A1F),
@@ -44,7 +66,8 @@ class _OVerifyState extends State<OVerify> {
             //   height: 5.h,
             // ),
             TextField(
-              controller: controller,
+              controller: otpcontroller,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 //contentPadding: EdgeInsets.all(8.0),
                 labelText: 'Enter OTP',
@@ -107,7 +130,7 @@ class _OVerifyState extends State<OVerify> {
               width: 210.w,
               height: 40.h,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed:verifyOTP,
                 child: Text(
                   'Get Started',
                   style: TextStyle(
@@ -118,8 +141,7 @@ class _OVerifyState extends State<OVerify> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF7B58B2),
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(22.r), // Rounded corners
+                    borderRadius: BorderRadius.circular(22.r), // Rounded corners
                   ),
                 ),
               ),
@@ -130,7 +152,6 @@ class _OVerifyState extends State<OVerify> {
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              
               children: [
                 Icon(
                   Icons.chevron_left,

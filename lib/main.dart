@@ -11,7 +11,7 @@ Future<void> main() async {
       options: FirebaseOptions(
           apiKey: 'AIzaSyA4ZMao8NaZzaYxEbJ-ycZPTcz0FepuL00',
           appId: "1:10777654946:android:90c665bc619242878009fb",
-          messagingSenderId: '',
+          messagingSenderId: '10777654946',
           projectId: "assessment-593d7"));
   String? token = await FirebaseMessaging.instance.getToken();
   print("FCM Token: $token");

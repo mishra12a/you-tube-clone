@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import 'Phone_Auth.dart';
+
 class VLogin extends StatefulWidget {
   const VLogin({super.key});
 
@@ -16,17 +18,21 @@ class _VLoginState extends State<VLogin> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController controller = TextEditingController();
-    // Country selectdCountry = Country(
-    //     phoneCode: "91",
-    //     countryCode: "IN",
-    //     e164Sc: 0,
-    //     geographic: true,
-    //     level: 1,
-    //     name: "India",
-    //     example: 'India',
-    //     displayName: "India",
-    //     displayNameNoCountryCode: "IN",
-    //     e164Key: "");
+
+    sendOTP(BuildContext ctx) async {
+      await PhoneAuthentication().sendOTPcode(controller.text.toString(),
+          (String veri_ID) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Wait for OTP')),
+        );
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OVerify(varificationID:veri_ID ,),
+            ));
+      });
+    }
+
     return Scaffold(
       backgroundColor: Color(0xFF191A1F),
       body: Center(
@@ -53,73 +59,72 @@ class _VLoginState extends State<VLogin> {
                 ),
               ),
             ),
-         
+
             TextField(
               controller: controller,
               //initialCountryCode: "IN",
               decoration: InputDecoration(
-                  //contentPadding: EdgeInsets.all(8.0),
-                  labelText: 'Enter Mobile Number',
-                  labelStyle: GoogleFonts.josefinSans(
-                    textStyle: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white),
+                //contentPadding: EdgeInsets.all(8.0),
+                labelText: 'Enter Mobile Number',
+                labelStyle: GoogleFonts.josefinSans(
+                  textStyle: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white),
+                ),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xFF7B58B2),
                   ),
-                  border: const OutlineInputBorder(
+                ),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(11.r),
                     borderSide: BorderSide(
                       color: Color(0xFF7B58B2),
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(11.r),
-                      borderSide: BorderSide(
-                        color: Color(0xFF7B58B2),
-                        width: 1.w,
-                      )),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(11.r),
-                      borderSide: BorderSide(
-                        color: Color(0xFF7B58B2),
-                        width: 1.w,
-                      )),
-                  // prefixIcon: Container(
-                  //   padding: EdgeInsets.all(8.0),
-                  //   child: GestureDetector(
-                  //     onTap: () {
-                  //       showCountryPicker(
-                  //           context: context,
-                  //           countryListTheme: CountryListThemeData(
+                      width: 1.w,
+                    )),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(11.r),
+                    borderSide: BorderSide(
+                      color: Color(0xFF7B58B2),
+                      width: 1.w,
+                    )),
+                // prefixIcon: Container(
+                //   padding: EdgeInsets.all(8.0),
+                //   child: GestureDetector(
+                //     onTap: () {
+                //       showCountryPicker(
+                //           context: context,
+                //           countryListTheme: CountryListThemeData(
 
-                  //             textStyle: TextStyle(color: Colors.black),
-                  //             bottomSheetHeight: 600.h,
-                  //           ), onSelect: (value) {
-                  //             setState(() {
-                  //               selectdCountry = value;
-                  //             });
-                  //           });
-                  //     },
-                  //     child: Text(
-                  //       "${selectdCountry.flagEmoji} + ${selectdCountry.phoneCode}",
-                  //       style: GoogleFonts.josefinSans(
-                  //         textStyle: TextStyle(
-                  //             fontSize: 15.sp,
-                  //             fontWeight: FontWeight.bold,
-                  //             color: Colors.white),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // )),
+                //             textStyle: TextStyle(color: Colors.black),
+                //             bottomSheetHeight: 600.h,
+                //           ), onSelect: (value) {
+                //             setState(() {
+                //               selectdCountry = value;
+                //             });
+                //           });
+                //     },
+                //     child: Text(
+                //       "${selectdCountry.flagEmoji} + ${selectdCountry.phoneCode}",
+                //       style: GoogleFonts.josefinSans(
+                //         textStyle: TextStyle(
+                //             fontSize: 15.sp,
+                //             fontWeight: FontWeight.bold,
+                //             color: Colors.white),
+                //       ),
+                //     ),
+                //   ),
+                // )),
               ),
-                  style:TextStyle(
-    color: Colors.white, 
-  ),
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
             // SizedBox(
             //   height: 10.h,
             // ),
 
-         
             Row(
               children: [
                 const Icon(
@@ -145,11 +150,7 @@ class _VLoginState extends State<VLogin> {
               height: 40.h,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OVerify(),
-                      ));
+                  sendOTP(context);
                 },
                 child: Text(
                   'Next',

@@ -42,7 +42,7 @@ packages:
     source: hosted
     version: "1.1.1"
   cloud_firestore:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: cloud_firestore
       sha256: e461ea9ab23959102a780efcbccfe33c2ac46269928bc57093bbc0b526afc801
@@ -122,7 +122,7 @@ packages:
     source: hosted
     version: "2.1.2"
   firebase_auth:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_auth
       sha256: f0a75f61992d036e4c46ad0e9febd364d98aa2c092690a5475cb1421a8243cfe
@@ -193,6 +193,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.8.5"
+  firebase_phone_auth_handler:
+    dependency: "direct main"
+    description:
+      name: firebase_phone_auth_handler
+      sha256: "586e69d6a14eb1276634bbf73a1ede598e85e14e95ea887c67e6d9c62fb6e821"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -336,6 +344,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -456,6 +472,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  provider:
+    dependency: transitive
+    description:
+      name: provider
+      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.2"
   sky_engine:
     dependency: transitive
     description: flutter
