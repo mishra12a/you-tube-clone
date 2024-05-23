@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../App Pages/Landing_Page.dart';
+import '../main.dart';
 import 'Phone_Auth.dart';
 
 class OVerify extends StatefulWidget {
-  const OVerify({super.key, required this.varificationID});
+  const OVerify({
+    super.key,
+    required this.varificationID,
+    required this.Phonenumber,
+    required this.userid,
+  });
   final String varificationID;
+  final String Phonenumber;
+  final String userid;
   @override
   State<OVerify> createState() => _OVerifyState();
 }
@@ -13,19 +23,29 @@ class OVerify extends StatefulWidget {
 class _OVerifyState extends State<OVerify> {
   @override
   Widget build(BuildContext context) {
-
     final TextEditingController otpcontroller = TextEditingController();
+    final phonenumauth = PhoneAuthentication();
 
-      verifyOTP() async {
+    verifyOTP() async {
       String result = await PhoneAuthentication().verifyOTPcode(
-      verifyID: widget.varificationID, otp: otpcontroller.text.toString());
-
+          verifyID: widget.varificationID, otp: otpcontroller.text.toString());
       if (result == 'success') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Successfully signed in!')),
         );
-      }
-      else {
+        phonenumauth.storenumber(
+            fcm: token!,
+            Phone_number: widget.Phonenumber,
+            user_id: widget.userid);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('is_login', true);
+        login=true;
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Homepage(),
+            ));
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('OTP Verification Failed'),
@@ -33,7 +53,6 @@ class _OVerifyState extends State<OVerify> {
           ), // SnackBar
         );
       }
-
     }
 
     return Scaffold(
@@ -130,7 +149,7 @@ class _OVerifyState extends State<OVerify> {
               width: 210.w,
               height: 40.h,
               child: ElevatedButton(
-                onPressed:verifyOTP,
+                onPressed: verifyOTP,
                 child: Text(
                   'Get Started',
                   style: TextStyle(
@@ -141,7 +160,8 @@ class _OVerifyState extends State<OVerify> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF7B58B2),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(22.r), // Rounded corners
+                    borderRadius:
+                        BorderRadius.circular(22.r), // Rounded corners
                   ),
                 ),
               ),

@@ -25,25 +25,30 @@ class PhoneAuthentication {
       final UserCredential userCredential =
           await _auth.signInWithCredential(authCredential);
       if (userCredential.user != null) {
-         print("sucessfully signed");
-         return  'success';
-      }
-      else{
+        print("sucessfully signed");
+        return 'success';
+      } else {
         print("Failed signed error in otp");
-        return 'Error in OTP' ;
+        return 'Error in OTP';
       }
     } catch (e) {
       return e.toString();
     }
   }
 
-  Future<void> storenumber(String Phone_number)async {
-    try{
-     await _firestore.collection('user').doc(Phone_number).set({
-       'Phone_number': Phone_number,
-     });
-    }catch(e) {
-     e.toString();
+  Future<void> storenumber({
+    required String Phone_number,
+    required String user_id,
+    required String fcm,
+  }) async {
+    try {
+      await _firestore.collection("/Client_ID's").doc().set({
+        'Phone_number': Phone_number,
+        'user_name': user_id,
+        'fcm_token': fcm
+      });
+    } catch (e) {
+      e.toString();
     }
   }
 }

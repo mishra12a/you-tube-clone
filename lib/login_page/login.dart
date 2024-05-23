@@ -1,10 +1,7 @@
 import 'package:assingment/login_page/otp_verify.dart';
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-
 import 'Phone_Auth.dart';
 
 class VLogin extends StatefulWidget {
@@ -18,9 +15,10 @@ class _VLoginState extends State<VLogin> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController controller = TextEditingController();
-
+    final TextEditingController userID_controller = TextEditingController();
+    bool? rememberme = true;
     sendOTP(BuildContext ctx) async {
-      await PhoneAuthentication().sendOTPcode(controller.text.toString(),
+      await PhoneAuthentication().sendOTPcode(controller.text.trim().toString(),
           (String veri_ID) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Wait for OTP')),
@@ -28,44 +26,46 @@ class _VLoginState extends State<VLogin> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => OVerify(varificationID:veri_ID ,),
+              builder: (context) => OVerify(userid:userID_controller.text,
+                varificationID: veri_ID,
+                Phonenumber: controller.text.toString(),
+              ),
             ));
       });
     }
 
     return Scaffold(
       backgroundColor: Color(0xFF191A1F),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(
               height: 70.h,
             ),
-            CircleAvatar(
-              radius: 40.r,
-            ),
-            SizedBox(
-              height: 20.h,
+            Image(
+              image: AssetImage('Assets/Premium.png'),
+              width: 120.w,
+              height: 120.h,
             ),
             Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Create Your Account',
+                'Create Your \nAccount',
                 style: GoogleFonts.josefinSans(
                   textStyle: TextStyle(
-                      fontSize: 35.sp,
+                      fontSize: 28.sp,
                       fontWeight: FontWeight.normal,
                       color: Colors.white),
                 ),
               ),
             ),
-
+            SizedBox(
+              height: 10.h,
+            ),
             TextField(
-              controller: controller,
-              //initialCountryCode: "IN",
+              controller: userID_controller,
               decoration: InputDecoration(
-                //contentPadding: EdgeInsets.all(8.0),
-                labelText: 'Enter Mobile Number',
+                labelText: 'User Name',
                 labelStyle: GoogleFonts.josefinSans(
                   textStyle: TextStyle(
                       fontSize: 15.sp,
@@ -89,48 +89,60 @@ class _VLoginState extends State<VLogin> {
                       color: Color(0xFF7B58B2),
                       width: 1.w,
                     )),
-                // prefixIcon: Container(
-                //   padding: EdgeInsets.all(8.0),
-                //   child: GestureDetector(
-                //     onTap: () {
-                //       showCountryPicker(
-                //           context: context,
-                //           countryListTheme: CountryListThemeData(
-
-                //             textStyle: TextStyle(color: Colors.black),
-                //             bottomSheetHeight: 600.h,
-                //           ), onSelect: (value) {
-                //             setState(() {
-                //               selectdCountry = value;
-                //             });
-                //           });
-                //     },
-                //     child: Text(
-                //       "${selectdCountry.flagEmoji} + ${selectdCountry.phoneCode}",
-                //       style: GoogleFonts.josefinSans(
-                //         textStyle: TextStyle(
-                //             fontSize: 15.sp,
-                //             fontWeight: FontWeight.bold,
-                //             color: Colors.white),
-                //       ),
-                //     ),
-                //   ),
-                // )),
               ),
               style: TextStyle(
                 color: Colors.white,
               ),
             ),
-            // SizedBox(
-            //   height: 10.h,
-            // ),
-
+            SizedBox(
+              height: 10.h,
+            ),
+            TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: 'Enter Mobile Number',
+                hintText:"+91 0000000000",
+                hintStyle:  TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white.withOpacity(0.2)),
+                labelStyle: GoogleFonts.josefinSans(
+                  textStyle: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white),
+                ),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xFF7B58B2),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(11.r),
+                    borderSide: BorderSide(
+                      color: Color(0xFF7B58B2),
+                      width: 1.w,
+                    )),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(11.r),
+                    borderSide: BorderSide(
+                      color: Color(0xFF7B58B2),
+                      width: 1.w,
+                    )),
+              ),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
             Row(
               children: [
-                const Icon(
-                  Icons.check_box_outline_blank,
-                  color: Color(0xFF7B58B2),
-                ),
+                Checkbox(
+                    value: rememberme,
+                    onChanged: (bool? newval) {
+                      setState(() {
+                        rememberme = newval;
+                      });
+                    }),
                 Text(
                   'Remember me',
                   style: GoogleFonts.josefinSans(
@@ -143,7 +155,7 @@ class _VLoginState extends State<VLogin> {
               ],
             ),
             SizedBox(
-              height: 40.h,
+              height: 20.h,
             ),
             SizedBox(
               width: 210.w,
